@@ -26,6 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 // For Getting Tweets from Network
 + (NSMutableArray *)tweetsWithArray:(NSArray *)dictionaries;
 
+- (instancetype)initWithDictionary:(NSDictionary *)dictionary;
+
 // For Retweets
 @property (strong, nonatomic) User *retweetedByUser;  // user who retweeted if tweet is retweet
 

@@ -15,6 +15,7 @@
 
 @property (strong, nonatomic) NSArray *tweetArray;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 
 @end
 
@@ -23,29 +24,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-    [refreshControl addTarget:self action:@selector(beginRefresh:) forControlEvents:UIControlEventValueChanged];
-    [self.tableView insertSubview:refreshControl atIndex:0];
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(getTimeline) forControlEvents:UIControlEventValueChanged];
+    [self.tableView insertSubview:self.refreshControl atIndex:0];
     
     // Set UITableViewDataSource methods
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
 //    self.tableView.rowHeight = UITableViewAutomaticDimension;
     
-    // Get timeline
-    [[APIManager shared] getHomeTimelineWithCompletion:^(NSArray *tweets, NSError *error) {
-        if (tweets) {
-            NSLog(@"😎😎😎 Successfully loaded home timeline");
-            NSLog(@"%@", tweets);
-            for (NSDictionary *dictionary in tweets) {
-//                NSString *text = dictionary[@"_text"];
-            }
-            self.tweetArray = tweets;
-            [self.tableView reloadData];
-        } else {
-            NSLog(@"😫😫😫 Error getting home timeline: %@", error.localizedDescription);
-        }
-    }];
+    [self getTimeline];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -53,7 +41,24 @@
     // Dispose of any resources that can be recreated.
 }
 
-
+- (void) getTimeline {
+    // Get timeline
+    [[APIManager shared] getHomeTimelineWithCompletion:^(NSArray *tweets, NSError *error) {
+        if (tweets) {
+            NSLog(@"😎😎😎 Successfully loaded home timeline");
+            NSLog(@"%@", tweets);
+            for (NSDictionary *dictionary in tweets) {
+                //                NSString *text = dictionary[@"_text"];
+            }
+            self.tweetArray = tweets;
+            [self.tableView reloadData];
+        } else {
+            NSLog(@"😫😫😫 Error getting home timeline: %@", error.localizedDescription);
+        }
+        // Tell the refreshControl to stop spinning
+        [self.refreshControl endRefreshing];
+    }];
+}
 
 /*
 #pragma mark - Navigation
@@ -78,7 +83,10 @@
     User *user = tweets.user;
     
     cell.authorLabel.text = user.name;
-    cell.handleLabel.text = user.screenName;
+    
+    NSString *atSymbol = @"@";
+    NSString *screenNameString = [atSymbol stringByAppendingString:user.screenName];
+    cell.handleLabel.text = screenNameString;
     cell.dateLabel.text = tweets.createdAtString;
     cell.tweetLabel.text = tweets.text;
     
@@ -88,31 +96,12 @@
     
     NSString* retweets = [NSString stringWithFormat:@"%i", tweets.retweetCount];
     cell.retweetLabel.text = retweets;
+    cell.retweetImageView.image = [UIImage imageNamed: @"retweet-icon"];
     NSString* favorites = [NSString stringWithFormat:@"%i", tweets.favoriteCount];
     cell.favoriteLabel.text = favorites;
-    
+    cell.favoriteImageView.image = [UIImage imageNamed: @"favor-icon"];
     
     return cell;
-}
-
-// Makes a network request to get updated data
-// Updates the tableView with the new data
-// Hides the RefreshControl
-- (void)beginRefresh:(UIRefreshControl *)refreshControl {
-    
-    // Create NSURL and NSURLRequest
-    NSURL *url = [NSURL URLWithString:@"https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed"];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:10.0];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
-    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                // ... Use the new data to update the data source ...
-                // Reload the tableView now that there is new data
-                    [self.tableView reloadData];
-                                                
-                // Tell the refreshControl to stop spinning
-                    [refreshControl endRefreshing];
-        }];
-    [task resume];
 }
 
 @end
