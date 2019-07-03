@@ -11,6 +11,10 @@
 
 @implementation Tweet
 
+// data models: objects that store data for reusability and to reduce errors in code
+// can be used for databases
+// data models do all of the work in one single place
+
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary {
     self = [super init];
     if (self) {

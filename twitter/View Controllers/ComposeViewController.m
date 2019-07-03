@@ -28,7 +28,15 @@
 }
 
 - (IBAction)postTweet:(id)sender {
-    [[APIManager shared] postStatusWithText:self.composeTextView.text completion:(void (^)(Tweet *, NSError *))nil];
+    [[APIManager shared]postStatusWithText:self.composeTextView.text completion:^(Tweet *tweet, NSError *error) {
+        if(error){
+            NSLog(@"Error composing Tweet: %@", error.localizedDescription);
+        }
+        else{
+            [self.delegate didTweet:tweet];
+            NSLog(@"Compose Tweet Success!");
+        }
+    }];
     
     // close the modal after tweet posts
     [self dismissViewControllerAnimated:true completion:nil];
