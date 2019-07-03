@@ -11,6 +11,8 @@
 #import "TweetCell.h"
 #import "UIImageView+AFNetworking.h"
 #import "ComposeViewController.h"
+#import "LoginViewController.h"
+#import "AppDelegate.h"
 
 @interface TimelineViewController () <ComposeViewControllerDelegate, UITableViewDataSource, UITableViewDelegate>
 // dataSource tells you: how many rows / gives back cells
@@ -116,24 +118,7 @@
     
     Tweet *tweets = self.tweetArray[indexPath.row];
     User *user = tweets.user;
-    
-    cell.authorLabel.text = user.name;
-    
-    NSString *atSymbol = @"@";
-    NSString *screenNameString = [atSymbol stringByAppendingString:user.screenName];
-    cell.handleLabel.text = screenNameString;
-    cell.dateLabel.text = tweets.createdAtString;
-    cell.tweetLabel.text = tweets.text;
     cell.tweet = tweets;
-    
-    NSString *profilePictureString = user.profilePicURL;
-    NSURL *profilePictureURL = [NSURL URLWithString:profilePictureString];
-    [cell.profileImageView setImageWithURL:profilePictureURL];
-    
-    NSString* retweets = [NSString stringWithFormat:@"%i", tweets.retweetCount];
-    cell.retweetLabel.text = retweets;
-    NSString* favorites = [NSString stringWithFormat:@"%i", tweets.favoriteCount];
-    cell.favoriteLabel.text = favorites;
     
     return cell;
 }
@@ -142,6 +127,16 @@
     self.tweetArray = [self.tweetArray arrayByAddingObject:tweet];
     [self getTimeline];
     [self.tableView reloadData];
+}
+
+- (IBAction)didTapLogOut:(id)sender {
+    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    LoginViewController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"LoginViewController"];
+    appDelegate.window.rootViewController = loginViewController;
+    
+    [[APIManager shared] logout];
 }
 
 @end

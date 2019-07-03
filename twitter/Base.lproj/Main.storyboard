@@ -79,7 +79,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Author" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Be-Wq-c8J">
-                                                    <rect key="frame" x="91" y="15" width="57" height="21"/>
+                                                    <rect key="frame" x="81" y="15" width="56.5" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="Qod-yD-77w"/>
                                                     </constraints>
@@ -88,22 +88,22 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tweet" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WRG-M7-wRh">
-                                                    <rect key="frame" x="91" y="48" width="268" height="94.5"/>
+                                                    <rect key="frame" x="81" y="48" width="278" height="94.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Handle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tfH-ac-iSW">
-                                                    <rect key="frame" x="164" y="15" width="55" height="21"/>
+                                                    <rect key="frame" x="153.5" y="15" width="54.5" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vre-OP-ydL">
-                                                    <rect key="frame" x="15" y="17" width="60" height="60"/>
+                                                    <rect key="frame" x="15" y="17" width="50" height="50"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="60" id="3J1-ac-so9"/>
-                                                        <constraint firstAttribute="height" constant="60" id="pQs-d6-iT4"/>
+                                                        <constraint firstAttribute="width" constant="50" id="3J1-ac-so9"/>
+                                                        <constraint firstAttribute="height" constant="50" id="pQs-d6-iT4"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BEM-Xz-54m">
@@ -119,7 +119,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A00-Ya-PLG">
-                                                    <rect key="frame" x="235" y="15" width="36" height="21"/>
+                                                    <rect key="frame" x="224" y="15" width="36" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -199,6 +199,11 @@
                         <viewLayoutGuide key="safeArea" id="ugE-Ul-H9I"/>
                     </view>
                     <navigationItem key="navigationItem" title="Home Timeline" id="MOc-fV-EZE">
+                        <barButtonItem key="leftBarButtonItem" title="Log Out" id="rBt-Md-yET">
+                            <connections>
+                                <action selector="didTapLogOut:" destination="Lbl-k5-U4i" id="d2a-By-Ram"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Item" image="edit-icon" id="DNJ-Mj-WL2">
                             <connections>
                                 <segue destination="Wzx-KY-zK9" kind="presentation" id="lvR-Na-BRE"/>
