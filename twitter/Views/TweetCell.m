@@ -9,6 +9,8 @@
 #import "TweetCell.h"
 #import "APIManager.h"
 #import "UIImageView+AFNetworking.h"
+#import "DateTools.h"
+#import "Tweet.h"
 
 @implementation TweetCell
 
@@ -24,28 +26,23 @@
     NSString *atSymbol = @"@";
     NSString *screenNameString = [atSymbol stringByAppendingString:self.tweet.user.screenName];
     self.handleLabel.text = screenNameString;
-    self.dateLabel.text = tweet.createdAtString;
+    NSDate *timeAgoDate = [NSDate dateWithString:tweet.createdAtString formatString:@"E MMM d HH:mm:ss Z y"];
+    NSLog(@"%@", tweet.createdAtString);
+    NSLog(@"%@", timeAgoDate);
+    self.dateLabel.text = timeAgoDate.shortTimeAgoSinceNow;
     self.tweetLabel.text = tweet.text;
     
     NSString *profilePictureString = self.tweet.user.profilePicURL;
     NSURL *profilePictureURL = [NSURL URLWithString:profilePictureString];
     [self.profileImageView setImageWithURL:profilePictureURL];
     
-    NSString* retweets = [NSString stringWithFormat:@"%i", tweet.retweetCount];
-    self.retweetLabel.text = retweets;
-    NSString* favorites = [NSString stringWithFormat:@"%i", tweet.favoriteCount];
-    self.favoriteLabel.text = favorites;
+    self.retweets = [NSString stringWithFormat:@"%i", tweet.retweetCount];
+    self.retweetLabel.text = self.retweets;
+    self.favorites = [NSString stringWithFormat:@"%i", tweet.favoriteCount];
+    self.favoriteLabel.text = self.favorites;
     
     self.retweetButton.selected = self.tweet.retweeted;
     self.favoriteButton.selected = self.tweet.favorited;
-    
-    if (retweets.integerValue == 0) {
-        self.retweetLabel.hidden = YES;
-    }
-    
-    if (favorites.integerValue == 0) {
-        self.favoriteLabel.hidden = YES;
-    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -54,14 +51,35 @@
     // Configure the view for the selected state
 }
 
+- (void)hideLabels {
+    if (self.retweets.integerValue == 0) {
+        self.retweetLabel.hidden = YES;
+    } else {
+        self.retweetLabel.hidden = NO;
+    }
+    
+    if (self.favorites.integerValue == 0) {
+        self.favoriteLabel.hidden = YES;
+    } else {
+        self.favoriteLabel.hidden = NO;
+    }
+}
+
 - (IBAction)didTapFavorite:(id)sender {
     // TODO: Update the local tweet model
     // TODO: Update cell UI
     // TODO: Send a POST request to the POST favorites/create endpoint
-    self.tweet.favorited = YES;
-    [sender setSelected:YES];
-    self.tweet.favoriteCount += 1;
-    self.favoriteLabel.hidden = NO;
+    if (self.tweet.favorited = YES) {
+        self.tweet.favorited = NO;
+        [sender setSelected:NO];
+        self.tweet.favoriteCount -= 1;
+        [self hideLabels];
+    } else {
+        self.tweet.favorited = YES;
+        [sender setSelected:YES];
+        self.tweet.favoriteCount += 1;
+        [self hideLabels];
+    }
     
     [[APIManager shared] favorite:self.tweet completion:^(Tweet *tweet, NSError *error) {
         if(error){

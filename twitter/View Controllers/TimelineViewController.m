@@ -13,6 +13,7 @@
 #import "ComposeViewController.h"
 #import "LoginViewController.h"
 #import "AppDelegate.h"
+#import "DateTools.h"
 
 @interface TimelineViewController () <ComposeViewControllerDelegate, UITableViewDataSource, UITableViewDelegate>
 // dataSource tells you: how many rows / gives back cells
@@ -71,7 +72,7 @@
             NSLog(@"😫😫😫 Error getting home timeline: %@", error.localizedDescription);
                 NSLog(@"%@", [error localizedDescription]);
                 UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Cannot Get Tweets"
-                                                                               message:@"The internet connection appears to be offline."
+                                             message:@"The internet connection appears to be offline."
                                                                         preferredStyle:(UIAlertControllerStyleAlert)];
                 // create a try again action
                 UIAlertAction *tryAgainAction = [UIAlertAction actionWithTitle:@"Try Again"
