@@ -24,4 +24,10 @@
 
 - (void)retweet:(Tweet *)tweet completion:(void (^)(Tweet *, NSError *))completion;
 
+- (void)unretweet:(Tweet *)tweet completion:(void (^)(Tweet *, NSError *))completion;
+
+- (void)getProfile:(Tweet *)tweet completion:(void (^)(Tweet *, NSError *))completion;
+
+- (void)getProfilePic:(NSString *)screenName completion:(void (^)(Tweet *, NSError *))completion;
+
 @end

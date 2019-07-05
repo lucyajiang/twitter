@@ -8,11 +8,15 @@
 
 #import "ComposeViewController.h"
 #import "APIManager.h"
+#import "UIImageView+AFNetworking.h"
+#import "User.h"
 
-@interface ComposeViewController ()
+@interface ComposeViewController () <UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextView *composeTextView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *closeButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *postTweetButton;
+@property (weak, nonatomic) IBOutlet UIImageView *profilePictureImageView;
+@property (strong, nonatomic) User *user;
 
 @end
 
@@ -21,6 +25,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.composeTextView.delegate = self;
+    self.composeTextView.text = @"What's happening?";
+    self.composeTextView.textColor = [UIColor lightGrayColor];
 }
 
 - (IBAction)closeCompose:(id)sender {
@@ -41,6 +48,26 @@
     // close the modal after tweet posts
     [self dismissViewControllerAnimated:true completion:nil];
 }
+
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
+    if ([textView.text isEqualToString:@"What's happening?"]) {
+        textView.text = @"";
+        textView.textColor = [UIColor blackColor]; //optional
+    }
+    [textView becomeFirstResponder];
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    if ([textView.text isEqualToString:@""]) {
+        textView.text = @"What's happening?";
+        textView.textColor = [UIColor lightGrayColor]; //optional
+    }
+    [textView resignFirstResponder];
+}
+
+
 
 /*
 #pragma mark - Navigation
