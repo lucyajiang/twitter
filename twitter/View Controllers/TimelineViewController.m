@@ -60,10 +60,6 @@
         if (tweets) {
             // success
             NSLog(@"😎😎😎 Successfully loaded home timeline");
-            NSLog(@"%@", tweets);
-//            for (NSDictionary *dictionary in tweets) {
-//                                NSString *text = dictionary[@"_text"];
-//            }
             self.tweetArray = tweets;
             // reload the table view to repopulate the UI; otherwise, it will not pick up the new information
             [self.tableView reloadData];

@@ -70,10 +70,6 @@
         [sender setSelected:NO];
         self.tweet.favoriteCount -= 1;
         
-        if (self.tweet.favoriteCount == 0) {
-            self.favoriteLabel.hidden = YES;
-        }
-        
         [[APIManager shared] unfavorite:self.tweet completion:^(Tweet *tweet, NSError *error) {
             if(error){
                 NSLog(@"Error unfavoriting tweet: %@", error.localizedDescription);
@@ -148,26 +144,12 @@
     } else {
         self.retweetLabel.textColor = [UIColor scrollViewTexturedBackgroundColor];
     }
-    
-    // Hiding label if retweets is 0
-    if (self.retweets.integerValue == 0) {
-        self.retweetLabel.hidden = YES;
-    } else {
-        self.retweetLabel.hidden = NO;
-    }
 }
 
 - (void) refreshFavoriteData {
     NSString* favorites = [NSString stringWithFormat:@"%i", self.tweet.favoriteCount];
     [self.favoriteButton setImage:[UIImage imageNamed:@"favor-icon-red"] forState:UIControlStateSelected];
     self.favoriteLabel.text = favorites;
-    
-    // Hiding label if favorites is 0
-    if (self.favorites.integerValue == 0) {
-        self.favoriteLabel.hidden = YES;
-    } else {
-        self.favoriteLabel.hidden = NO;
-    }
     
     // Changing color of text label
     if (self.tweet.favorited) {
