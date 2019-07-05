@@ -26,7 +26,7 @@
     NSString *atSymbol = @"@";
     NSString *screenNameString = [atSymbol stringByAppendingString:self.tweet.user.screenName];
     self.handleLabel.text = screenNameString;
-    NSDate *timeAgoDate = [NSDate dateWithString:tweet.createdAtString formatString:@"E MMM d HH:mm:ss Z y"];
+    NSDate *timeAgoDate = [NSDate dateWithString:tweet.createdAtString formatString:@"MM/dd/yy"];
     NSLog(@"%@", tweet.createdAtString);
     NSLog(@"%@", timeAgoDate);
     self.dateLabel.text = timeAgoDate.shortTimeAgoSinceNow;
@@ -41,8 +41,14 @@
     self.favorites = [NSString stringWithFormat:@"%i", tweet.favoriteCount];
     self.favoriteLabel.text = self.favorites;
     
-    self.retweetButton.selected = self.tweet.retweeted;
-    self.favoriteButton.selected = self.tweet.favorited;
+    if (self.tweet.retweeted) {
+        self.retweetButton.selected = YES;
+    }
+    if (self.tweet.favorited) {
+        self.favoriteButton.selected = YES;
+    }
+    
+    [self refreshData];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -69,26 +75,31 @@
     // TODO: Update the local tweet model
     // TODO: Update cell UI
     // TODO: Send a POST request to the POST favorites/create endpoint
-    if (self.tweet.favorited = YES) {
+    if (self.tweet.favorited) {
         self.tweet.favorited = NO;
         [sender setSelected:NO];
         self.tweet.favoriteCount -= 1;
+        [[APIManager shared] unfavorite:self.tweet completion:^(Tweet *tweet, NSError *error) {
+            if(error){
+                NSLog(@"Error unfavoriting tweet: %@", error.localizedDescription);
+            } else {
+                NSLog(@"Successfully unfavorited the following Tweet: %@", tweet.text);
+            }
+        }];
         [self hideLabels];
     } else {
         self.tweet.favorited = YES;
         [sender setSelected:YES];
         self.tweet.favoriteCount += 1;
+        [[APIManager shared] favorite:self.tweet completion:^(Tweet *tweet, NSError *error) {
+            if(error){
+                NSLog(@"Error favoriting tweet: %@", error.localizedDescription);
+            } else {
+                NSLog(@"Successfully favorited the following Tweet: %@", tweet.text);
+            }
+        }];
         [self hideLabels];
     }
-    
-    [[APIManager shared] favorite:self.tweet completion:^(Tweet *tweet, NSError *error) {
-        if(error){
-            NSLog(@"Error favoriting tweet: %@", error.localizedDescription);
-        } else {
-            NSLog(@"Successfully favorited the following Tweet: %@", tweet.text);
-        }
-    }];
-    
     [self refreshData];
 }
 
