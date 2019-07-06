@@ -59,9 +59,10 @@
 }
 
 - (void)textViewDidChange:(UITextView *)textView {
-    NSInteger *length = [textView.text length];
-    
-    self.characterLabel.text = [NSString stringWithFormat:@"%u", length];
+    NSInteger length = [textView.text length];
+    NSInteger charsLeft = 140;
+    charsLeft -= length;
+    self.characterLabel.text = [NSString stringWithFormat:@"%u", charsLeft];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView
