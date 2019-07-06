@@ -372,12 +372,25 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BuO-Rs-q4e">
+                                <rect key="frame" x="348.5" y="375" width="10.5" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="EFm-gK-k6T"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="PkB-j0-Uls" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="BuO-Rs-q4e" secondAttribute="bottom" constant="271" id="2d0-4Y-kL4"/>
                             <constraint firstItem="0yN-AT-u71" firstAttribute="leading" secondItem="IGa-Z0-Dev" secondAttribute="leadingMargin" id="74b-oZ-Bkq"/>
+                            <constraint firstItem="BuO-Rs-q4e" firstAttribute="top" secondItem="PkB-j0-Uls" secondAttribute="top" constant="311" id="9Ks-NX-TCV"/>
                             <constraint firstItem="0yN-AT-u71" firstAttribute="top" secondItem="PkB-j0-Uls" secondAttribute="top" constant="12" id="aRv-yB-VPg"/>
+                            <constraint firstItem="PkB-j0-Uls" firstAttribute="trailing" secondItem="BuO-Rs-q4e" secondAttribute="trailing" constant="16" id="gsE-5f-Lh2"/>
                             <constraint firstItem="0yN-AT-u71" firstAttribute="trailing" secondItem="PkB-j0-Uls" secondAttribute="trailing" constant="-12" id="hRw-bS-cUm"/>
+                            <constraint firstItem="BuO-Rs-q4e" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="PkB-j0-Uls" secondAttribute="leading" constant="100" id="mae-2l-J5z"/>
                             <constraint firstItem="0yN-AT-u71" firstAttribute="bottom" secondItem="PkB-j0-Uls" secondAttribute="bottom" constant="-12" id="wYd-Jq-iYJ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="PkB-j0-Uls"/>
@@ -395,6 +408,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="characterLabel" destination="BuO-Rs-q4e" id="0Ke-iY-V3u"/>
                         <outlet property="closeButton" destination="ZmK-aj-UGM" id="V2D-oZ-yiN"/>
                         <outlet property="composeTextView" destination="0yN-AT-u71" id="0b8-dS-iHw"/>
                         <outlet property="postTweetButton" destination="O55-iW-aTH" id="993-VZ-Qbl"/>

@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UITextView *composeTextView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *closeButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *postTweetButton;
+@property (weak, nonatomic) IBOutlet UILabel *characterLabel;
 @property (strong, nonatomic) User *user;
 
 @end
@@ -55,6 +56,12 @@
         textView.textColor = [UIColor blackColor]; //optional
     }
     [textView becomeFirstResponder];
+}
+
+- (void)textViewDidChange:(UITextView *)textView {
+    NSInteger *length = [textView.text length];
+    
+    self.characterLabel.text = [NSString stringWithFormat:@"%u", length];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView
