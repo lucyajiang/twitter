@@ -1,45 +1,37 @@
 //
-//  TweetCell.m
+//  DetailsViewController.m
 //  twitter
 //
-//  Created by lucjia on 7/1/19.
+//  Created by lucjia on 7/5/19.
 //  Copyright © 2019 Emerson Malca. All rights reserved.
 //
 
-#import "TweetCell.h"
-#import "APIManager.h"
+#import "DetailsViewController.h"
 #import "UIImageView+AFNetworking.h"
-#import "DateTools.h"
-#import "Tweet.h"
+#import "APIManager.h"
 
-@implementation TweetCell
+@interface DetailsViewController ()
 
-- (void)awakeFromNib {
-    [super awakeFromNib];
-    // Initialization code
-}
+@end
 
-- (void)setTweet:(Tweet *)tweet {
-    _tweet = tweet;
-    
+@implementation DetailsViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
     self.authorLabel.text = self.tweet.user.name;
     NSString *atSymbol = @"@";
     NSString *screenNameString = [atSymbol stringByAppendingString:self.tweet.user.screenName];
     self.handleLabel.text = screenNameString;
-//    NSDate *timeAgoDate = [NSDate dateWithString:tweet.createdAtString];
-//    NSLog(@"%@", tweet.createdAtString);
-//    NSLog(@"%@", timeAgoDate);
-    self.dateLabel.text = tweet.createdAtString;
-    self.tweetLabel.text = tweet.text;
+    self.dateLabel.text = self.tweet.createdAtString;
+    self.tweetLabel.text = self.tweet.text;
     
     NSString *profilePictureString = self.tweet.user.profilePicURL;
     NSURL *profilePictureURL = [NSURL URLWithString:profilePictureString];
     [self.profileImageView setImageWithURL:profilePictureURL];
     
-    self.retweets = [NSString stringWithFormat:@"%i", tweet.retweetCount];
-    self.retweetLabel.text = self.retweets;
-    self.favorites = [NSString stringWithFormat:@"%i", tweet.favoriteCount];
-    self.favoriteLabel.text = self.favorites;
+    self.retweetLabel.text = [NSString stringWithFormat:@"%i", self.tweet.retweetCount];
+    self.favoriteLabel.text = [NSString stringWithFormat:@"%i", self.tweet.favoriteCount];
     
     if (self.tweet.retweeted) {
         self.retweetButton.selected = YES;
@@ -55,50 +47,7 @@
     [self refreshFavoriteData];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-}
-
-- (IBAction)didTapFavorite:(id)sender {
-    // TODO: Update the local tweet model
-    // TODO: Update cell UI
-    // TODO: Send a POST request to the POST favorites/create endpoint
-    if (self.tweet.favorited) {
-        self.tweet.favorited = NO;
-        [sender setSelected:NO];
-        self.tweet.favoriteCount -= 1;
-        
-        [[APIManager shared] unfavorite:self.tweet completion:^(Tweet *tweet, NSError *error) {
-            if(error){
-                NSLog(@"Error unfavoriting tweet: %@", error.localizedDescription);
-            } else {
-                NSLog(@"Successfully unfavorited the following Tweet: %@", tweet.text);
-            }
-        }];
-        self.favoriteLabel.textColor = [UIColor scrollViewTexturedBackgroundColor];
-    } else {
-        self.tweet.favorited = YES;
-        [sender setSelected:YES];
-        self.tweet.favoriteCount += 1;
-        [[APIManager shared] favorite:self.tweet completion:^(Tweet *tweet, NSError *error) {
-            if(error){
-                NSLog(@"Error favoriting tweet: %@", error.localizedDescription);
-            } else {
-                NSLog(@"Successfully favorited the following Tweet: %@", tweet.text);
-            }
-        }];
-        self.favoriteLabel.textColor = [UIColor colorWithRed:(200/255.f) green:(0/255.f) blue:(0/255.f) alpha:1.0];
-    }
-    [self refreshFavoriteData];
-}
-
 - (IBAction)didTapRetweet:(id)sender {
-    // TODO: Update the local tweet model
-    // TODO: Update cell UI
-    // TODO: Send a POST request to the POST retweet/create endpoint
-    
     if (self.tweet.retweeted) {
         self.tweet.retweeted = NO;
         [sender setSelected:NO];
@@ -129,6 +78,36 @@
     [self refreshRetweetData];
 }
 
+- (IBAction)didTapFavorite:(id)sender {
+    if (self.tweet.favorited) {
+        self.tweet.favorited = NO;
+        [sender setSelected:NO];
+        self.tweet.favoriteCount -= 1;
+        
+        [[APIManager shared] unfavorite:self.tweet completion:^(Tweet *tweet, NSError *error) {
+            if(error){
+                NSLog(@"Error unfavoriting tweet: %@", error.localizedDescription);
+            } else {
+                NSLog(@"Successfully unfavorited the following Tweet: %@", tweet.text);
+            }
+        }];
+        self.favoriteLabel.textColor = [UIColor scrollViewTexturedBackgroundColor];
+    } else {
+        self.tweet.favorited = YES;
+        [sender setSelected:YES];
+        self.tweet.favoriteCount += 1;
+        [[APIManager shared] favorite:self.tweet completion:^(Tweet *tweet, NSError *error) {
+            if(error){
+                NSLog(@"Error favoriting tweet: %@", error.localizedDescription);
+            } else {
+                NSLog(@"Successfully favorited the following Tweet: %@", tweet.text);
+            }
+        }];
+        self.favoriteLabel.textColor = [UIColor colorWithRed:(200/255.f) green:(0/255.f) blue:(0/255.f) alpha:1.0];
+    }
+    [self refreshFavoriteData];
+}
+
 - (void)refreshRetweetData {
     NSString* retweets = [NSString stringWithFormat:@"%i", self.tweet.retweetCount];
     [self.retweetButton setImage:[UIImage imageNamed:@"retweet-icon-green"] forState:UIControlStateSelected];
@@ -154,5 +133,15 @@
         self.favoriteLabel.textColor = [UIColor scrollViewTexturedBackgroundColor];
     }
 }
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
 
 @end

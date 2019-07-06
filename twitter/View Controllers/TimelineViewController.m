@@ -14,8 +14,11 @@
 #import "LoginViewController.h"
 #import "AppDelegate.h"
 #import "DateTools.h"
+#import "DetailsViewController.h"
 
 @interface TimelineViewController () <ComposeViewControllerDelegate, UITableViewDataSource, UITableViewDelegate>
+
+// NOTE:
 // dataSource tells you: how many rows / gives back cells
 // delegate tells you: touch events (but we are not using any functionality right now)
 
@@ -40,7 +43,6 @@
     // Set UITableViewDataSource methods
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
-//    self.tableView.rowHeight = UITableViewAutomaticDimension;
     
     [self getTimeline];
 }
@@ -51,7 +53,6 @@
 }
 
 - (void) getTimeline {
-    // Get timeline
     // Completion handler (always a function in the view controller)
     // Can define a function by passing a pointer to a function
     // Note: ^ indicates that a block is coming, function is called in-line with the API request
@@ -94,10 +95,23 @@
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    UINavigationController *navigationController = [segue destinationViewController];
-    
-    ComposeViewController *composeController = (ComposeViewController*)navigationController.topViewController;
-    composeController.delegate = self;
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+    if ([segue.identifier isEqualToString: @"toDetails"]) {
+        UITableViewCell *tappedCell = sender;
+        NSIndexPath *indexPath = [self.tableView indexPathForCell:tappedCell];
+        Tweet *tweet = self.tweetArray[indexPath.row];
+        
+        DetailsViewController *detailsViewController = [segue destinationViewController];
+        detailsViewController.tweet = tweet;
+        
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    } else {
+        UINavigationController *navigationController = [segue destinationViewController];
+        
+        ComposeViewController *composeController = (ComposeViewController*)navigationController.topViewController;
+        composeController.delegate = self;
+    }
 }
 
 // tableView asks dataSource for number of rows / cell for row at

@@ -15,7 +15,6 @@
 @property (weak, nonatomic) IBOutlet UITextView *composeTextView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *closeButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *postTweetButton;
-@property (weak, nonatomic) IBOutlet UIImageView *profilePictureImageView;
 @property (strong, nonatomic) User *user;
 
 @end
